@@ -10,28 +10,31 @@ import numpy as np
 ############## Task 1
 
 ##################
-# your code here #
-##################
-
 G = nx.read_edgelist('CA-HepTh.txt', delimiter="\t", comments='#')
 print(G)
+##################
+
+
 
 ############## Task 2
 
 ##################
-# your code here #
+print(nx.number_connected_components(G))
+#retrieve largest connected component
+largest_connected_component = max(nx.connected_components(G), key=len)
+
+#subgraph of largest connected component
+S = G.subgraph(largest_connected_component).copy()
+print(S)
 ##################
 
-print(nx.number_connected_components(G))
 
-largest = max(nx.connected_components(G), key=len)
-S = G.subgraph(largest).copy()
-print(S)
 
 
 
 ############## Task 3
-# Degree
+
+#compute degree of each node
 degree_sequence = [G.degree(node) for node in G.nodes()]
 
 ##################
@@ -49,15 +52,20 @@ print("mean : ", np.mean(degree_sequence))
 # your code here #
 ##################
 
-histogram = nx.degree_histogram(G)
+#compute degree histogram
+frequencies = nx.degree_histogram(G)
 
-deg = range(len(histogram))
+degrees = range(len(frequencies))
+
 plt.figure()
-plt.bar(deg,histogram)
+plt.xlabel('Degree')
+plt.ylabel('Frequency')
+plt.title('Degree distribution')
+
+plt.bar(degrees,frequencies)
 plt.show()
 
-plt.loglog(deg, histogram, 'x')
-
+plt.loglog(degrees, frequencies, 'x')
 plt.show()
 
 
@@ -69,4 +77,10 @@ plt.show()
 # your code here #
 ##################
 
-print(nx.transitivity(G))
+print("Global clustering coefficient = ",nx.transitivity(G))
+
+
+
+
+
+

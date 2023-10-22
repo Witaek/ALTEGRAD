@@ -145,7 +145,7 @@ K_train_sp, K_test_sp = shortest_path_kernel(G_train, G_test)
 ############## Task 12
 
 ##################
-#use the graphlet kernel function to compute the kernel matrices associated withe the graphlet kernel
+#Compute kernel matrices
 K_train_gk, K_test_gk = graphlet_kernel(G_train, G_test)
 ##################
 
@@ -155,6 +155,7 @@ K_train_gk, K_test_gk = graphlet_kernel(G_train, G_test)
 ############## Task 13
 
 ##################
+#SVM classiers
 clf_sp = SVC(kernel='precomputed')
 clf_sp.fit(K_train_sp, y_train)
 y_pred_sp = clf_sp.predict(K_test_sp)

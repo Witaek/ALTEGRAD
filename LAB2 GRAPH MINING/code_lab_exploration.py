@@ -38,20 +38,17 @@ print(S)
 degree_sequence = [G.degree(node) for node in G.nodes()]
 
 ##################
-# your code here #
-##################
-
 print("max : ", np.max(degree_sequence))
 print("min : ", np.min(degree_sequence))
 print("mean : ", np.mean(degree_sequence))
+##################
+
+
 
 
 ############## Task 4
 
 ##################
-# your code here #
-##################
-
 #compute degree histogram
 frequencies = nx.degree_histogram(G)
 
@@ -65,8 +62,14 @@ plt.title('Degree distribution')
 plt.bar(degrees,frequencies)
 plt.show()
 
+plt.xlabel('Degree')
+plt.ylabel('Frequency')
+plt.title('Loglog degree distribution')
 plt.loglog(degrees, frequencies, 'x')
 plt.show()
+##################
+
+
 
 
 
@@ -74,10 +77,9 @@ plt.show()
 ############## Task 5
 
 ##################
-# your code here #
+print("Global clustering coefficient = ",nx.transitivity(G))
 ##################
 
-print("Global clustering coefficient = ",nx.transitivity(G))
 
 
 

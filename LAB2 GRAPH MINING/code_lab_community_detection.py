@@ -16,7 +16,6 @@ from sklearn.cluster import KMeans
 def spectral_clustering(G, k):
 
     ##################
-
     A = nx.adjacency_matrix(G)
 
     degrees = dict(G.degree())
@@ -26,21 +25,16 @@ def spectral_clustering(G, k):
     
     L = eye(A.shape[0]) - D_inverse@A
     
-
     #Eigen decomposition of L
     _,U = eigs(L, k=k, which='SR')
 
     U = U.real
 
-
     #K-means on rows of U
     kmeans = KMeans(n_clusters=k, random_state=0).fit(U)
     labels = kmeans.labels_
     clustering = dict(zip(G.nodes(), labels))
-
     ##################
-    
-
     
     return clustering
 
@@ -51,13 +45,13 @@ def spectral_clustering(G, k):
 ############## Task 7
 
 ##################
-#Apply the Spectral Clustering algorithm to the giant connected component of the CA-HepTh dataset, trying to identify 50 clusters
-
+#Apply the Spectral Clustering algorithm to the giant connected component
 G = nx.read_edgelist('CA-HepTh.txt', delimiter="\t", comments='#')
-#retrieve largest connected component
+
+#Retrieve largest connected component
 largest_connected_component = max(nx.connected_components(G), key=len)
 
-#subgraph of largest connected component
+#Subgraph of largest connected component
 S = G.subgraph(largest_connected_component).copy()
 
 
@@ -76,6 +70,8 @@ print(cluster_sizes)
 ############## Task 8
 # Compute modularity value from graph G based on clustering
 def modularity(G, clustering):
+
+    ##################
     A = nx.adjacency_matrix(G).toarray()
     m = G.number_of_edges()
 
@@ -101,7 +97,7 @@ def modularity(G, clustering):
             modularity += (A[matrix_i, matrix_j] - (ki * kj) / (2 * m)) * delta
 
     modularity /= (2 * m)
-
+    ##################
     return modularity
 
 

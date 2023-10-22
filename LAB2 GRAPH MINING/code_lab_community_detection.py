@@ -71,7 +71,7 @@ def modularity(G, clustering):
     #number of edges
     m = G.number_of_edges()
 
-    modularity = .0
+    modularity = 0
 
     for cluster in range(nc):
         nodes_c = [node for node in G.nodes() if clustering[node] == cluster]

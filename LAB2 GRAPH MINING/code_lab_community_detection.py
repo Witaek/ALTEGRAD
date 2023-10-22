@@ -54,13 +54,7 @@ largest_connected_component = max(nx.connected_components(G), key=len)
 #Subgraph of largest connected component
 S = G.subgraph(largest_connected_component).copy()
 
-
 clustering = spectral_clustering(S, 50)
-
-cluster_sizes = {cluster_id: list(clustering.values()).count(cluster_id) for cluster_id in set(clustering.values())}
-
-
-print(cluster_sizes)
 ##################
 
 
@@ -68,35 +62,23 @@ print(cluster_sizes)
 
 
 ############## Task 8
-# Compute modularity value from graph G based on clustering
-def modularity(G, clustering):
 
+def modularity(G, clustering):
     ##################
-    A = nx.adjacency_matrix(G).toarray()
+    #number of clusters
+    nc = len(set(clustering.values()))
+
+    #number of edges
     m = G.number_of_edges()
 
-    modularity = 0.0
+    modularity = .0
 
-    # Create a mapping from node indices in the graph to matrix indices
-    node_to_matrix_index = {node: i for i, node in enumerate(G.nodes())}
-
-    for i in G.nodes():
-        for j in G.nodes():
-            ki = G.degree(i)
-            kj = G.degree(j)
-            Ci = clustering[i]  # Use the clustering directly
-            Cj = clustering[j]
-
-            # Use the mapping to get the matrix indices
-            matrix_i = node_to_matrix_index[i]
-            matrix_j = node_to_matrix_index[j]
-
-            # Kronecker delta function
-            delta = 1 if Ci == Cj else 0
-
-            modularity += (A[matrix_i, matrix_j] - (ki * kj) / (2 * m)) * delta
-
-    modularity /= (2 * m)
+    for cluster in range(nc):
+        nodes_c = [node for node in G.nodes() if clustering[node] == cluster]
+        subgraph = G.subgraph(nodes_c)
+        lc = subgraph.number_of_edges()
+        dc = sum([G.degree(node) for node in nodes_c])
+        modularity += lc / m - (dc / (2 * m)) ** 2
     ##################
     return modularity
 

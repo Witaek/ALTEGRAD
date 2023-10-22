@@ -16,7 +16,11 @@ def create_dataset():
     y = list()
 
     ##################
-    # your code here #
+    for i in range(3,103):
+        Gs.append(nx.cycle_graph(i))
+        Gs.append(nx.path_graph(i))
+        y.append(0)
+        y.append(1)
     ##################
 
     return Gs, y
@@ -105,14 +109,26 @@ def graphlet_kernel(Gs_train, Gs_test, n_samples=200):
     phi_train = np.zeros((len(G_train), 4))
     
     ##################
-    # your code here #
+    for index, graph in enumerate(G_train):
+        for i in range(n_samples):
+            nodes = np.random.choice(graph.nodes(), 3, replace=False)
+            subgraph = graph.subgraph(nodes)
+            for j, graphlet in enumerate(graphlets):
+                if nx.is_isomorphic(subgraph, graphlet):
+                    phi_train[index, j] += 1
     ##################
 
 
     phi_test = np.zeros((len(G_test), 4))
     
     ##################
-    # your code here #
+    for index, graph in enumerate(G_test):
+        for i in range(n_samples):
+            nodes = np.random.choice(graph.nodes(), 3, replace=False)
+            subgraph = graph.subgraph(nodes)
+            for j, graphlet in enumerate(graphlets):
+                if nx.is_isomorphic(subgraph, graphlet):
+                    phi_test[index, j] += 1
     ##################
 
 
@@ -129,7 +145,8 @@ K_train_sp, K_test_sp = shortest_path_kernel(G_train, G_test)
 ############## Task 12
 
 ##################
-# your code here #
+#use the graphlet kernel function to compute the kernel matrices associated withe the graphlet kernel
+K_train_gk, K_test_gk = graphlet_kernel(G_train, G_test)
 ##################
 
 
@@ -138,6 +155,16 @@ K_train_sp, K_test_sp = shortest_path_kernel(G_train, G_test)
 ############## Task 13
 
 ##################
-# your code here #
+clf_sp = SVC(kernel='precomputed')
+clf_sp.fit(K_train_sp, y_train)
+y_pred_sp = clf_sp.predict(K_test_sp)
+acc_sp = accuracy_score(y_test, y_pred_sp)
+print("Accuracy shortest path kernel: ", acc_sp)
+
+clf_gk = SVC(kernel='precomputed')
+clf_gk.fit(K_train_gk, y_train)
+y_pred_gk = clf_gk.predict(K_test_gk)
+acc_gk = accuracy_score(y_test, y_pred_gk)
+print("Accuracy graphlet kernel: ", acc_gk)
 ##################
 

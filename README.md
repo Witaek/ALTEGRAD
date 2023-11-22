@@ -1,2 +1,2 @@
 # ALTEGRAD
-MVA Course Labs
+MVA Master Course Labs (ENS Paris Saclay & Institut Polytechnique de Paris)

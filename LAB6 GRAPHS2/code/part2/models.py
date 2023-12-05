@@ -47,7 +47,7 @@ class GNN(nn.Module):
         ############## Task 7
     
         x = self.relu(self.mp1(x, adj))
-        x = self.dropout(x)
+        x = self.dropout(x)     
         x = self.relu(self.mp2(x, adj))
         
         if self.readout == 'sum':

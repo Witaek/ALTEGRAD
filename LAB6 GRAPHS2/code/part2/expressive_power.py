@@ -67,16 +67,21 @@ G1.add_nodes_from([0,1,2,3,4,5])
 G1.add_edges_from([(0,1),(1,2),(2,0),(3,4),(4,5),(5,3)])      
 G2 = nx.cycle_graph(6)
 
+G3 = nx.Graph()
+G3.add_nodes_from([0,1,2,3])
+G3.add_edges_from([(0,1), (1,2), (2,1), (1,3),(3,2)])
 
-
+G4 = nx.Graph()
+G4.add_nodes_from([0,1,2,3])
+G4.add_edges_from([(0,1), (2,1), (1,3),(3,2)])
 ############## Task 10
 
-adj = sp.block_diag(nx.adjacency_matrix(G) for G in [G1,G2])
+adj = sp.block_diag(nx.adjacency_matrix(G) for G in [G3, G4])
 
 x = np.ones((adj.shape[0], 1))
 
 idx = []
-for i,G in enumerate([G1,G2]):
+for i,G in enumerate([G3, G4]):
     idx += [i]*G.number_of_nodes()
 
 adj = sparse_mx_to_torch_sparse_tensor(adj).to(device)
